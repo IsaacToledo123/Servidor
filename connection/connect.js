@@ -7,7 +7,7 @@ const connectToDatabase = async () => {
 
       try {
 
-            await mongoose.connect(`${API_URL}`, {useUnifiedTopology : true});
+            await mongoose.connect(`${API_URL}`);
             console.log("Connection completed")
 
       } catch (error) {

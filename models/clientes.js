@@ -6,10 +6,26 @@ const usuarioSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    contraseña: {
+        type: String,
+        required: true,
+    },
     email: {
         type: String,
         required: true,
     },
+    sexo: {
+        type: String,
+        required: true,
+    },
+    objetivos: {
+        type: String,
+    },
+    plan: {
+        type: String
+    },
+
+
 
 }, {
     versionKey: false

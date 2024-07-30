@@ -6,17 +6,43 @@ const getUsuarios = (req, res) => {
     .then((data) => res.json(data))
     .catch((error)=> res.json({massage:error}))
 }
+const loginUsuario = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const usuario = await usuarioSchema.findOne({ email });
+
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    
+    if (password !== usuario.contraseña) {
+  
+      return res.status(401).json({ error: 'Credenciales inválidas' });
+    }
+
+    res.status(200).json({ message: 'Login exitoso', usuario });
+
+  } catch (error) {
+    console.error('Error en el login:', error);
+    res.status(500).json({ error: 'Error en el login' });
+  }
+};
+
 const postUsuario = async (req, res) => {
 
     try {
   
-      const { nombre, email } = req.body;
+      const { nombre,contraseña, email ,sexo,objetivos,plan} = req.body;
   
       const nuevoUsuario = new usuarioSchema({
   
         nombre,
-        email
-  
+        contraseña,
+        email,
+        sexo,
+        objetivos,
+        plan
       });
   
       const usuarioGuardado = await nuevoUsuario.save();
@@ -58,8 +84,22 @@ const updateUsuario = async (req, res) => {
   
     }
   };
+
+  const getAllUsuarios = async (req, res) => {
+    try {
+      const clientes = await usuarioSchema.find();
+      res.status(200).json(clientes);
+    } catch (error) {
+      console.error('Error al obtener los clientes:', error);
+      res.status(500).json({ error: 'Error al obtener los clientes' });
+    }
+  };
+
+
   module.exports={
+    getAllUsuarios,
     updateUsuario,
     postUsuario,
-    getUsuarios
+    getUsuarios,
+    loginUsuario
   }
